@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>报名成功</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        .success-message { 
+            background: #dff0d8; 
+            color: #3c763d; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 30px;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-message">
+        <h1>报名成功！</h1>
+        <p>您已成功报名参加 <strong>{{ activity.title }}</strong></p>
+        <p>感谢您的参与！</p>
+    </div>
+    
+    <a href="{% url 'activity_list' %}" class="btn">返回活动列表</a>
+</body>
+</html>

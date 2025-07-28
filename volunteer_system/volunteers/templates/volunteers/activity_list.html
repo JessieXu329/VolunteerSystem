@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>志愿活动列表</title>
+    <style>
+        /* 基本样式 */
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .filters { background: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .activity-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .activity-card { border: 1px solid #ddd; border-radius: 5px; padding: 15px; }
+        .activity-card h3 { margin-top: 0; }
+        .category-badge { 
+            background: #e0e0e0; 
+            padding: 3px 8px; 
+            border-radius: 10px; 
+            font-size: 0.8em; 
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .signup-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .signup-btn:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>志愿活动列表</h1>
+            <p>欢迎参加我们的志愿活动！</p>
+        </div>
+        
+        <div class="filters">
+            <form method="get">
+                <input type="text" name="search" placeholder="搜索活动..." value="{{ search_query }}">
+                
+                <select name="category">
+                    <option value="">所有类别</option>
+                    {% for value, label in categories %}
+                        <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">筛选</button>
+                {% if search_query or selected_category %}
+                    <a href="{% url 'activity_list' %}">清除筛选</a>
+                {% endif %}
+            </form>
+        </div>
+        
+        <div class="activity-list">
+            {% for activity in activities %}
+                <div class="activity-card">
+                    <span class="category-badge">{{ activity.get_category_display }}</span>
+                    <h3>{{ activity.title }}</h3>
+                    <p>{{ activity.description|truncatechars:100 }}</p>
+                    <p><strong>时间:</strong> {{ activity.date|date:"Y-m-d H:i" }}</p>
+                    <p><strong>地点:</strong> {{ activity.location }}</p>
+                    <p><strong>招募人数:</strong> {{ activity.slots }}</p>
+                    <a href="{% url 'volunteer_signup' activity.id %}" class="signup-btn">立即报名</a>
+                </div>
+            {% empty %}
+                <p>没有找到符合条件的活动。</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
